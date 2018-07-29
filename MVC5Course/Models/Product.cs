@@ -11,24 +11,23 @@ namespace MVC5Course.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Product
     {
+    	partial void Init(); //修改EF的tt檔 --> 將部分方法在建構子中執行，若部分方法沒有實作也不會發生例外
+    
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
             this.OrderLine = new HashSet<OrderLine>();
+    		this.Init(); //修改EF的tt檔 --> 將部分方法在建構子中執行，若部分方法沒有實作也不會發生例外
         }
     
         public int ProductId { get; set; }
-
         public string ProductName { get; set; }
-
         public Nullable<decimal> Price { get; set; }
-
         public Nullable<bool> Active { get; set; }
-
         public Nullable<decimal> Stock { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

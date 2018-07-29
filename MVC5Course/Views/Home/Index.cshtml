@@ -1,12 +1,21 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    //Layout = ""; //可清除Layout
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+@* @functions{}會將內容完全搬到 *@
+@functions{ 
+    public int MyProperty { get; set; }
+}
+
+@* 使用自訂函數(實務上很少用) *@
+@Banner()
+
+@this.ViewContext
+
+@{ 
+    this.MyProperty = 777;
+}
 
 <div class="row">
     <div class="col-md-4">
@@ -29,3 +38,12 @@
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
+
+@* 宣告自訂函數(實務上很少用) *@
+@helper Banner() { 
+    <div class="jumbotron">
+        <h1>ASP.NET Test @@helper</h1>
+        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
+        <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    </div>
+}

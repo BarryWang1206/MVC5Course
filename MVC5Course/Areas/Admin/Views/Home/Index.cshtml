@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Admin's Home/Index</h2>
+
+<script>
+    console.log('@Html.Raw(ViewBag.Msg)'); // 容易遭受攻擊
+    console.log('@Ajax.JavaScriptStringEncode(ViewBag.Msg)'); // 安全的字串
+</script>

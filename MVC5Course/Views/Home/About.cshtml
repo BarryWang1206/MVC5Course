@@ -5,3 +5,17 @@
 <h3>@ViewBag.Message</h3>
 
 <p>Use this area to provide additional information.</p>
+123
+
+
+@* 老師整理在View中取得各種資料 *@
+@Model
+@*@ViewData.ModelState["id"].Value.AttemptedValue*@
+@{ var routeValues = ViewContext.RouteData.Values; }
+@HttpContext.Current.Items
+
+@* 同下 *@
+@ViewContext.ViewData.Model
+@*@ViewContext.ViewData.ModelState["id"].Value.AttemptedValue*@
+
+

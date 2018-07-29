@@ -14,10 +14,14 @@ namespace MVC5Course.Models
     
     public partial class Occupation
     {
+    	partial void Init(); //修改EF的tt檔 --> 將部分方法在建構子中執行，若部分方法沒有實作也不會發生例外
+    
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Occupation()
         {
             this.Client = new HashSet<Client>();
+    		this.Init(); //修改EF的tt檔 --> 將部分方法在建構子中執行，若部分方法沒有實作也不會發生例外
         }
     
         public int OccupationId { get; set; }

@@ -4,24 +4,33 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using MVC5Course.Models;
 using Omu.ValueInjecter;
+using X.PagedList;
 
 namespace MVC5Course.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : BaseController
     {
         private FabricsEntities db = new FabricsEntities(); //DbContext
 
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(int pageNo = 1)
         {
+            //var data = db.Product
+            //    .OrderByDescending(p => p.ProductId)
+            //    .Take(10)
+            //    .ToList();    
+            //return View(data);
+
+            //實作分頁
             var data = db.Product
-                .OrderByDescending(p => p.ProductId)
-                .Take(10)
-                .ToList();    
+                .OrderByDescending(p => p.ProductId) //先排序(一定要做，否則會發生例外錯誤)
+                .ToPagedList(pageNumber: pageNo, pageSize: 10); //再分頁
+
             return View(data);
         }
 
@@ -158,7 +167,7 @@ namespace MVC5Course.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] //用來避免CSRF(跨站請求偽造)攻擊
         public ActionResult Create([Bind(Include = "ProductId,ProductName,Price,Active,Stock")] Product product)
         {
             if (ModelState.IsValid)
@@ -197,7 +206,16 @@ namespace MVC5Course.Controllers
             {
                 db.Entry(product).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                //配合Ajax的作法
+                if (Request.IsAjaxRequest())
+                {
+                    return new EmptyResult(); //如果是Ajax就不要顯示View
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             return View(product);
         }
@@ -219,13 +237,22 @@ namespace MVC5Course.Controllers
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken] //配合Ajax需停用此屬性(否則會被擋，因為防止CSRF機制)
         public ActionResult DeleteConfirmed(int id)
         {
             Product product = db.Product.Find(id);
             db.Product.Remove(product);
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            //配合Ajax作法
+            var data = db.Product
+                .OrderByDescending(p => p.ProductId)
+                .Take(10)
+                .ToList();
+            return View("Index", data);
+
+
+            //return RedirectToAction("Index"); //原做法
         }
 
         protected override void Dispose(bool disposing)

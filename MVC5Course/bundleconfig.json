@@ -1,0 +1,9 @@
+[
+  {
+    "outputFileName": "js/bundle.js",
+    "inputFiles": [
+      "js/counter2.js",
+      "js/bootstrap2.js"
+    ]
+  }
+]

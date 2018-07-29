@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "ViewBagDemo";
+
+    //示範 ViewData[""] 弱型別在 View 中需要轉型的問題
+    //取得資料
+    var data = ViewData["Data"] as List<MVC5Course.Models.Client>; //要轉型
+}
+
+<h2>ViewBagDemo: @ViewBag.Text</h2>
+<h3>ViewBagDemo: @ViewBag.Word</h3>
+<h3>ViewBagDemo: @ViewBag.GG</h3>
+
+<ul>
+    @* 顯示data的內容 *@
+    @foreach(var item in data)
+    {
+        //顯示FirstName
+        <li>@item.FirstName</li>
+    }
+</ul>
+

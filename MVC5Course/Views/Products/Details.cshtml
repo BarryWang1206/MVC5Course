@@ -2,6 +2,11 @@
 
 @{
     ViewBag.Title = "Details";
+
+    if (IsAjax)
+    {
+        Layout = ""; //當結果為Ajax的輸出時 可以將原先的Layout停用 (因通常都是在原頁面的某個區塊顯示Ajax結果)
+    }
 }
 
 <h2>Details</h2>

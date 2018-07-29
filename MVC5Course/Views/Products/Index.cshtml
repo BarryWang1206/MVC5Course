@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = "Index";
+    if (IsAjax)
+    {
+        Layout = ""; //配合Ajax作法停用原先的Layout
+    }
 }
 
 <h2>Index</h2>
@@ -9,6 +13,9 @@
 <p>
     @Html.ActionLink("Create New New", "Create")
 </p>
+<div id="loading" style="display: none">
+    <img src="http://www.ajaxload.info/cache/FF/FF/FF/00/00/00/8-0.gif" />
+</div>
 <table class="table">
     <tr>
         <th>
@@ -26,26 +33,61 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProductName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Active)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Stock)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ProductId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ProductId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Active)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Stock)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.ProductId }) |*@
+                @*@Html.ActionLink("Details", "Details", new { id=item.ProductId }) |*@
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.ProductId })*@
+
+                @* 實作Ajax效果 *@
+                @{
+                    var ajaxOptions = new AjaxOptions() { UpdateTargetId = "details", LoadingElementId = "loading" };
+                }
+                @Ajax.ActionLink("Edit", "Edit", new { id = item.ProductId }, ajaxOptions) |
+                @Ajax.ActionLink("Details", "Details", new { id = item.ProductId }, ajaxOptions) |
+                @Ajax.ActionLink("Delete", "Delete", new { id=item.ProductId },
+
+                //※UpdateTargetId所設定的值 main 即Ajax輸出的位置Id (定義在Views\Shared\_Layout.cshtml中)
+                new AjaxOptions() { HttpMethod="POST", UpdateTargetId="main", Confirm = "你確定要刪除嗎？" })
+            </td>
+        </tr>
+    }
 
 </table>
+
+@* 實作Table分頁(使用X.PagedList.Mvc套件) *@
+<p>無Ajax</p>
+@Html.PagedListPager(Model as IPagedList, (p) => Url.Action("Index", new { pageNo = p }))
+
+@* 實作Table分頁(以Ajax實作)(使用X.PagedList.Mvc套件) ※PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing所設定的值 main 即Ajax輸出的位置Id (定義在Views\Shared\_Layout.cshtml中) *@
+@* 要記得在本頁將Layout停用(否則會因為Layout被載入而重複載入HTML標籤、JS等...) *@
+<p>有Ajax</p>
+@Html.PagedListPager(Model as IPagedList, (p) => Url.Action("Index", new { pageNo = p }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing("main"))
+
+@* 實作Table分頁(使用X.PagedList.Mvc套件) 更改樣式(待修正...) *@
+@Html.PagedListPager(Model as IPagedList, (p) => Url.Action("Index", new { pageNo = p }), new PagedListRenderOptions()
+{
+    ContainerDivClasses = new string[] { "pagination-container", "pager1" }
+})
+
+@* 實作Ajax效果 *@
+<div id="details"></div>
+
+@section Scripts{
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+}

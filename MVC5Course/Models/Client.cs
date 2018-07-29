@@ -14,10 +14,14 @@ namespace MVC5Course.Models
     
     public partial class Client
     {
+    	partial void Init(); //修改EF的tt檔 --> 將部分方法在建構子中執行，若部分方法沒有實作也不會發生例外
+    
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Client()
         {
             this.Order = new HashSet<Order>();
+    		this.Init(); //修改EF的tt檔 --> 將部分方法在建構子中執行，若部分方法沒有實作也不會發生例外
         }
     
         public int ClientId { get; set; }
@@ -37,6 +41,8 @@ namespace MVC5Course.Models
         public Nullable<double> Longitude { get; set; }
         public Nullable<double> Latitude { get; set; }
         public string Notes { get; set; }
+        public string IdNumber { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual Occupation Occupation { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

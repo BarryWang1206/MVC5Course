@@ -7,6 +7,10 @@ namespace MVC5Course.Models
     [MetadataType(typeof(OccupationMetaData))]
     public partial class Occupation
     {
+        partial void Init()
+        {
+            //throw new NotImplementedException();
+        }
     }
     
     public partial class OccupationMetaData

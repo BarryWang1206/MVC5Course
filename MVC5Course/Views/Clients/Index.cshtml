@@ -1,0 +1,92 @@
+﻿@* 已在View > Web.config 中增加一個namespace <add namespace="MVC5Course.Models" /> 故可改用 *@
+@*@model IEnumerable<MVC5Course.Models.Client>*@
+@model IEnumerable<Client>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("Search", "Clients", FormMethod.Get, null))
+{
+    //實作下拉式選單
+    @Html.DropDownList("CreditRating", null, "--請選擇評價等級--", new { @class="form-control"})
+
+    //其中value預設值來源的優先順序為 1.ModelState 2.在view設定表單欄位時給的預設值(@Html Helper) 3.ViewBag (最好用此方式給值) 4.Model
+    @Html.TextBox("keyword", null, new { placeholder = "請填入關鍵字" })
+    <input type="submit" />
+}
+
+@using (Html.BeginForm("BatchUpdate", "Clients"))
+{
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MiddleName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfBirth)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreditRating)
+            </th>
+            <th></th>
+        </tr>
+
+        @{
+            //取得Model轉為陣列之資料
+            var data = Model.ToArray();
+        }
+
+        @for (var i = 0; i < data.Length; i++)
+        {
+            @Html.HiddenFor(modelItem => data[i].ClientId)
+            <tr>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].FirstName)
+                    @Html.ValidationMessageFor(model => data[i].FirstName, "", new { @Class = "text-danger" })
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].MiddleName)
+                    @Html.ValidationMessageFor(model => data[i].MiddleName, "", new { @Class = "text-danger" })
+                </td>
+                <td>
+                    @Html.EditorFor(modelItem => data[i].LastName)
+                    @Html.ValidationMessageFor(model => data[i].LastName, "", new { @Class = "text-danger" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].DateOfBirth)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => data[i].CreditRating)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = data[i].ClientId }) |
+                    @Html.ActionLink("Details", "Details", new { id = data[i].ClientId }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = data[i].ClientId })
+                </td>
+            </tr>
+        }
+
+    </table>
+
+    <input type="submit" />
+}

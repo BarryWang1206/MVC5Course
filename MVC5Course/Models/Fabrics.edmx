@@ -10,22 +10,24 @@
             <PropertyRef Name="ClientId" />
           </Key>
           <Property Name="ClientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="FirstName" Type="varchar" MaxLength="40" />
-          <Property Name="MiddleName" Type="varchar" MaxLength="40" />
-          <Property Name="LastName" Type="varchar" MaxLength="40" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
           <Property Name="Gender" Type="char" MaxLength="1" />
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="CreditRating" Type="float" />
           <Property Name="XCode" Type="char" MaxLength="7" />
           <Property Name="OccupationId" Type="int" />
-          <Property Name="TelephoneNumber" Type="varchar" MaxLength="20" />
-          <Property Name="Street1" Type="varchar" MaxLength="100" />
-          <Property Name="Street2" Type="varchar" MaxLength="100" />
-          <Property Name="City" Type="varchar" MaxLength="100" />
-          <Property Name="ZipCode" Type="varchar" MaxLength="15" />
+          <Property Name="TelephoneNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Street1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Street2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="50" />
           <Property Name="Longitude" Type="float" />
           <Property Name="Latitude" Type="float" />
-          <Property Name="Notes" Type="varchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="IdNumber" Type="char" MaxLength="10" />
+          <Property Name="IsDeleted" Type="bit" />
         </EntityType>
         <EntityType Name="Occupation">
           <Key>
@@ -145,24 +147,26 @@
             <PropertyRef Name="ClientId" />
           </Key>
           <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Name="MiddleName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
-          <Property Name="LastName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
           <Property Name="CreditRating" Type="Double" />
           <Property Name="XCode" Type="String" MaxLength="7" FixedLength="true" Unicode="false" />
           <Property Name="OccupationId" Type="Int32" />
-          <Property Name="TelephoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="Street1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Street2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="ZipCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="TelephoneNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Street1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Street2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Longitude" Type="Double" />
           <Property Name="Latitude" Type="Double" />
-          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Occupation" Relationship="Self.FK_Client_Occupation" FromRole="Client" ToRole="Occupation" />
           <NavigationProperty Name="Order" Relationship="Self.fk_Order_ClientId" FromRole="Client" ToRole="Order" />
+          <Property Name="IdNumber" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="IsDeleted" Type="Boolean" />
         </EntityType>
         <EntityType Name="Occupation">
           <Key>
@@ -288,6 +292,8 @@
           <EntitySetMapping Name="Client">
             <EntityTypeMapping TypeName="FabricsModel.Client">
               <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IdNumber" ColumnName="IdNumber" />
                 <ScalarProperty Name="ClientId" ColumnName="ClientId" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />

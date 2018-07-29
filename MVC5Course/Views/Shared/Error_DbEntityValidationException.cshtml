@@ -1,0 +1,34 @@
+﻿@model HandleErrorInfo
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width" />
+    <title>錯誤</title>
+</head>
+<body>
+    <hgroup>
+        <h1>錯誤。</h1>
+        <h2>處理您的要求時發生錯誤。(For ActionResult BatchUpdate)</h2>
+        <hr />
+        @{ 
+            var ex = Model.Exception as System.Data.Entity.Validation.DbEntityValidationException;
+            List<string> errors = new List<string>();
+            foreach (var vError in ex.EntityValidationErrors)
+            {
+                foreach (var err in vError.ValidationErrors)
+                {
+                    errors.Add(err.PropertyName + ": " + err.ErrorMessage);
+                }
+            }
+        }
+
+        <ol>
+            @foreach(var item in errors)
+            {
+                <li>@item</li>
+            }
+        </ol>
+    </hgroup>
+</body>
+</html>
